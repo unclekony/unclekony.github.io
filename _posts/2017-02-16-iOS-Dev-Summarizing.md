@@ -30,7 +30,27 @@ kvo主要运用了isa-swizzling的方法，在调用addObserve方法的时候，
 主要由libdispatch、Libc和XNU内核实现了GCD，通过C语言层面的管理线程的容器和FIFO队列维护这个过程。
 
 #### block实现原理
-![Objective-C下的Block](http://okxyl92j3.bkt.clouddn.com/Objective-C%E7%9A%84block_1.jpg)
+
+<pre><code>
+\#import "TestClass.h"
+<br />
+@implementation TestClass
+<br />
+\- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.name = @"aaaaa";
+        self.innerBlock = ^(NSString *param){
+            NSLog(@"%@", self.name);
+        };
+        self.innerBlock(@"bbbbb");
+    }
+    return self;
+}
+<br/>
+@end
+</pre></code>
 
 ![C++下的Block](http://okxyl92j3.bkt.clouddn.com/Objective-C%E7%9A%84block_2.jpg)
 
@@ -61,7 +81,18 @@ iOS的内存管理是通过引用数来管理对象的。在MRC的时期，需�
 具备保存上下文变量内存块的函数指针。OC的闭包。
 
 #### __block实现原理
-![Objective-C下的__block](http://okxyl92j3.bkt.clouddn.com/Objective-C%E4%B8%8B%E7%9A%84__block_1.jpg)
+
+<pre><code>
+int main(int argc, char * argv[]) {
+	int a = 10;
+    __block int b = 11;
+    void (^mBlock)() = ^{
+        NSLog(@"%d", a);
+        NSLog(@"%d", b);
+   };
+   mBlock();
+}
+</pre></code>
 
 ![C++下的__block](http://okxyl92j3.bkt.clouddn.com/Objective-C%E4%B8%8B%E7%9A%84__block_2.jpg)
 
@@ -91,30 +122,32 @@ GCD和NSOperation会把对象添加到autoreleasepool中，但NSThread需要自�
 [iOS 中的各种锁](http://www.cocoachina.com/ios/20161129/18216.html)
 
 #### GCD实现同步
->
-	dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-	dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-	dispatch_aync(queue, ^{
-		dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW,10ull *  NSEC_PER_SEC);
-		dispatch_after(time, queue, ^{
-			NSLog("111111");
-			dispatch_semaphore_signal(semaphore);
-		}
-	})
-	dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-	NSLog("2222222");
+<pre><code>
+dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+dispatch_aync(queue, ^{
+	dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW,10ull *  NSEC_PER_SEC);
+	dispatch_after(time, queue, ^{
+		NSLog("111111");
+		dispatch_semaphore_signal(semaphore);
+	}
+})
+dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+NSLog("2222222");
+</pre></code>
 
 #### GCD实现单例
->
-	+ (instancetype)shareInstance
-	{
-    	static dispatch_once_t onceToken = 0;
-    	static id instance;
-    	dispatch_once(&onceToken, ^{
-        	instance = [[self alloc] init];
-    	});
-    	return instance;
-	}
+<pre><code>
++ (instancetype)shareInstance
+{
+    static dispatch_once_t onceToken = 0;
+    static id instance;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
+}
+</pre></code>
 
 ## runtime
 
