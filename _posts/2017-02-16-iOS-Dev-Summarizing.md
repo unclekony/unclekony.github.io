@@ -31,12 +31,12 @@ kvo主要运用了isa-swizzling的方法，在调用addObserve方法的时候，
 
 #### block实现原理
 
-<pre><code>
-\#import "TestClass.h"
-<br />
+```
+#import "TestClass.h"
+
 @implementation TestClass
-<br />
-\- (instancetype)init
+
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -48,9 +48,9 @@ kvo主要运用了isa-swizzling的方法，在调用addObserve方法的时候，
     }
     return self;
 }
-<br/>
+
 @end
-</pre></code>
+```
 
 ![C++下的Block](http://okxyl92j3.bkt.clouddn.com/Objective-C%E7%9A%84block_2.jpg)
 
@@ -82,7 +82,7 @@ iOS的内存管理是通过引用数来管理对象的。在MRC的时期，需�
 
 #### __block实现原理
 
-<pre><code>
+```
 int main(int argc, char * argv[]) {
 	int a = 10;
     __block int b = 11;
@@ -92,7 +92,7 @@ int main(int argc, char * argv[]) {
    };
    mBlock();
 }
-</pre></code>
+```
 
 ![C++下的__block](http://okxyl92j3.bkt.clouddn.com/Objective-C%E4%B8%8B%E7%9A%84__block_2.jpg)
 
@@ -122,7 +122,7 @@ GCD和NSOperation会把对象添加到autoreleasepool中，但NSThread需要自�
 [iOS 中的各种锁](http://www.cocoachina.com/ios/20161129/18216.html)
 
 #### GCD实现同步
-<pre><code>
+```
 dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 dispatch_aync(queue, ^{
@@ -134,10 +134,10 @@ dispatch_aync(queue, ^{
 })
 dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 NSLog("2222222");
-</pre></code>
+```
 
 #### GCD实现单例
-<pre><code>
+```
 + (instancetype)shareInstance
 {
     static dispatch_once_t onceToken = 0;
@@ -147,7 +147,7 @@ NSLog("2222222");
     });
     return instance;
 }
-</pre></code>
+```
 
 ## runtime
 

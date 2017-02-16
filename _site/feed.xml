@@ -1,8 +1,284 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-02-04T22:03:03+08:00</updated><id>http://localhost:4000//</id><title type="html">KONY</title><subtitle>记录一位奋斗在互联网前线的80后奶爸的捣腾之路</subtitle><entry><title type="html">My 2016</title><link href="http://localhost:4000/My-2016/" rel="alternate" type="text/html" title="My 2016" /><published>2016-01-24T00:00:00+08:00</published><updated>2016-01-24T00:00:00+08:00</updated><id>http://localhost:4000/My-2016</id><content type="html" xml:base="http://localhost:4000/My-2016/">&lt;h4 id=&quot;section&quot;&gt;泥鳅的出现&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-02-17T00:33:29+08:00</updated><id>http://localhost:4000//</id><title type="html">KONY</title><subtitle>记录一位奋斗在互联网前线的80后奶爸的捣腾之路</subtitle><entry><title type="html">iOS开发知识点总结</title><link href="http://localhost:4000/iOS-Dev-Summarizing/" rel="alternate" type="text/html" title="iOS开发知识点总结" /><published>2016-02-16T00:00:00+08:00</published><updated>2016-02-16T00:00:00+08:00</updated><id>http://localhost:4000/iOS-Dev-Summarizing</id><content type="html" xml:base="http://localhost:4000/iOS-Dev-Summarizing/">&lt;h2 id=&quot;section&quot;&gt;底层原理&lt;/h2&gt;
+
+&lt;h4 id=&quot;weak&quot;&gt;weak的实现&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;runtime为每个类对象都维护了一张全局的weak_table，里面的key是赋值对象的内存地址，value是weak修饰符的属性对象内存地址。当某个对象delloc的时候，系统会检查该类对象是否存在弱引用，如果存在则检查于之对应的weak_table，将所有能匹配到这个对象的value重新指向nil。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;!http://www.cocoachina.com/ios/20150605/11990.html&quot;&gt;weak的生命周期：具体实现方法&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;kvc&quot;&gt;kvc的实现&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;kvc主要是根据类对象的isa指针和方法名，从method_list里面找到对应方法的函数指针，然后结合参数去执行。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;kvo&quot;&gt;kvo的实现&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;kvo主要运用了isa-swizzling的方法，在调用addObserve方法的时候，讲对象的isa指针指向了一个新的继承于当前类的子类对象，并添加了一个相同名字的setter方法在方法列表里面，在setter方法里面加上了willChangeValueForKey/didChangeValueForKey的触发。当我们调用了setter方法的时候，会先触发will然后再调用原类对象的setter方法再调用did。当调用removeObserve方法的时候，该对象的isa指针又重新指向了原类对象了。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.nscookies.com/isa-swizzling/&quot;&gt;isa-swizzling?什么鬼？&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.pluto-y.com/isa-swizzling-and-runtime/&quot;&gt;从自己实现isa-swizzling到说一些Runtime的内容&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;gcd&quot;&gt;GCD的实现&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;主要由libdispatch、Libc和XNU内核实现了GCD，通过C语言层面的管理线程的容器和FIFO队列维护这个过程。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;block&quot;&gt;block实现原理&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#import &quot;TestClass.h&quot;
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;@implementation&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TestClass&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;instancetype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;super&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;@&quot;aaaaa&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;innerBlock&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;param&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&quot;%@&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;innerBlock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&quot;bbbbb&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;@end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/Objective-C%E7%9A%84block_2.jpg&quot; alt=&quot;C++下的Block&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;从画线和画圈处得知block本质上是一个函数指针，而且这个函数指针是包含在一个结构体里面，该结构体还会包含block参数的字段。&lt;/li&gt;
+    &lt;li&gt;箭头处可以发现为何说block会引用self。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;ios&quot;&gt;iOS内存管理机制&lt;/h2&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;基础部分&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;iOS的内存管理是通过引用数来管理对象的。在MRC的时期，需要自己手动地调用retain/release方法，在ARC时期，在静态编译阶段，编译器会分析代码在适当的地方添加retain/release/autorelease方法。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;autorelease&quot;&gt;autorelease&lt;/h4&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;每一个线程在每一个runloop开始的时候都会创建一个autoreleasepool，系统会将autoreleased的对象放到这个pool里面。当这个runloop要结束的时候，系统会将pool里面的所有autoreleased对象进行释放。我们可以通过@autoreleasepool关键字去创建一个局部的autoreleasepool，当超过了这个作用域的时候，里面的autoreleased对象都会全部释放。@autoreleasepool适合解决创建大量临时对象。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;问题&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;用什么方法在创建之后会放到autoreleasepool中？&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;block-1&quot;&gt;block&lt;/h2&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;概念&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;具备保存上下文变量内存块的函数指针。OC的闭包。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;block-2&quot;&gt;__block实现原理&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;int main(int argc, char * argv[]) {
+	int a = 10;
+    __block int b = 11;
+    void (^mBlock)() = ^{
+        NSLog(@&quot;%d&quot;, a);
+        NSLog(@&quot;%d&quot;, b);
+   };
+   mBlock();
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/Objective-C%E4%B8%8B%E7%9A%84__block_2.jpg&quot; alt=&quot;C++下的__block&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;__block其实是由一个传值过程变为传地址的过程。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;多线程&lt;/h2&gt;
+
+&lt;h4 id=&quot;nsthread&quot;&gt;NSThread&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;GCD和NSOperation会把对象添加到autoreleasepool中，但NSThread需要自己手动创建并触发释放。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;gcd-1&quot;&gt;GCD&lt;/h3&gt;
+
+&lt;h4 id=&quot;section-5&quot;&gt;串行、并行、同步、异步&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;串行、并行是针对线程队列，同步、异步是针对线程的任务。&lt;/li&gt;
+    &lt;li&gt;系统对串行队列的调度是单条线程把任务一个一个地执行。&lt;/li&gt;
+    &lt;li&gt;系统对并行队列的调度是由系统管理多个线程去完成任务，任务之前无需等待。&lt;/li&gt;
+    &lt;li&gt;同步(sync)指当前线程会阻塞，等待同步线程完成当前任务后再去执行。&lt;/li&gt;
+    &lt;li&gt;异步(async)指当前线程不需要阻塞，可以直接执行当前任务。&lt;/li&gt;
+    &lt;li&gt;dispatch_get_main_queue是串行队列。&lt;/li&gt;
+    &lt;li&gt;dispatch_get_global_queue是并行队列。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-6&quot;&gt;锁种类&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://www.cocoachina.com/ios/20161129/18216.html&quot;&gt;iOS 中的各种锁&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;gcd-2&quot;&gt;GCD实现同步&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+dispatch_aync(queue, ^{
+	dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW,10ull *  NSEC_PER_SEC);
+	dispatch_after(time, queue, ^{
+		NSLog(&quot;111111&quot;);
+		dispatch_semaphore_signal(semaphore);
+	}
+})
+dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+NSLog(&quot;2222222&quot;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;gcd-3&quot;&gt;GCD实现单例&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;+ (instancetype)shareInstance
+{
+    static dispatch_once_t onceToken = 0;
+    static id instance;
+    dispatch_once(&amp;amp;onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;runtime&quot;&gt;runtime&lt;/h2&gt;
+
+&lt;h4 id=&quot;section-7&quot;&gt;概念&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;runtime是运行于操作系统与应该用程序的一个中间层，为OC消息转发机制、运行时动态生成类、对象以和方法，消息转发机制，以及Method Swizzling提供基础，并且暴露一套C接口给应用者调用。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;objectclassmetaclass&quot;&gt;Object、Class、MetaClass的关系&lt;/h4&gt;
+&lt;p&gt;NSObject的实现
+&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/NSObject%E5%AE%9E%E7%8E%B0%E6%88%AA%E5%9B%BE.jpg&quot; alt=&quot;NSObject&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Class的实现
+&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/Class%E5%AE%9E%E7%8E%B0%E6%88%AA%E5%9B%BE.jpg&quot; alt=&quot;Class&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;objc_class的实现
+&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/objc_class%E5%AE%9E%E7%8E%B0%E6%88%AA%E5%9B%BE.jpg&quot; alt=&quot;objc_class&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;isa是对象指向的对应Class结构体的指针
+&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/isa%E6%8C%87%E9%92%88%E6%88%AA%E5%9B%BE.jpg&quot; alt=&quot;isa&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;在OC下面everything都是对象，instance是对象，class也是对象。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;methodimpsel&quot;&gt;Method、IMP、SEL的关系&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;objc_method_list指向的列表存储的正式Method。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;(下图非官方公开代码)
+&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/objc_method%E5%AE%9E%E7%8E%B0%E6%88%AA%E5%9B%BE.jpg&quot; alt=&quot;Method&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;section-8&quot;&gt;“调用方法”的根本是“消息派发”&lt;/h4&gt;
+
+&lt;p&gt;通过&lt;em&gt;clang -rewrite-objc&lt;/em&gt; 把OC代码转成C++得到下图。
+&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E8%BF%87%E7%A8%8B.jpg&quot; alt=&quot;消息派发&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;runtime会在当前isa指向的objc_class结构体里面的objc_cache搜索对应的Method,如果没有则会在objc_method_list继续搜索，如果还没有会在super_class逐层往上找。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;section-9&quot;&gt;消息转发机制&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;当runtime找不到某个方法的时候，它会给开发者机会去处理，这个处理的机制就是消息转发机制，而我们常说的消息转发机制其实分两个过程，动态决议和消息转发。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E8%BF%87%E7%A8%8B.jpg&quot; alt=&quot;消息转发机制&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;动态决议的resolveInstanceMethod和resolveClassMethod主要是针对当前对象。&lt;/li&gt;
+    &lt;li&gt;消息转发forwardingTargetForSelector和forwardInvocation是针对其他对象。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;method-swizzling&quot;&gt;Method swizzling&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&quot;http://tech.glowing.com/cn/method-swizzling-aop/&quot;&gt;Method Swizzling 和 AOP 实践&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;runloop&quot;&gt;runloop&lt;/h2&gt;
+
+&lt;h4 id=&quot;section-10&quot;&gt;概念&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;runloop其实就是程序的事件循环机制，我们程序能不断地响应键盘、触碰等事件全靠它。&lt;/li&gt;
+    &lt;li&gt;runloop管理着所有我们需要处理的事件和消息，这些事件和消息都会经过“接受”-&amp;gt;“等待”-&amp;gt;“处理”这些状态。&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;runloop-1&quot;&gt;runloop与线程的关系&lt;/h4&gt;
+&lt;blockquote&gt;
+
+  &lt;p&gt;系统有一个全局Map管理线程对象和runloop对象的一对一关系。当第一次去获取runloop对象的时候系统才会去初始化这个map，才会把主线程的runloop放到map管理。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;runloopnstimer&quot;&gt;runloop跟NSTimer的关系&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.superqq.com/blog/2016/05/05/ios-nsrunllop-nstimer/&quot;&gt;关于NSRunLoop和NSTimer的深入理解&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;section-11&quot;&gt;原理实现&lt;/h4&gt;
+&lt;p&gt;这一块后面单独写一篇详细的，给出链接。&lt;/p&gt;</content><summary type="html">对iOS开发中runtime、多线程等知识点的归纳总结</summary></entry><entry><title type="html">优秀开源仓库</title><link href="http://localhost:4000/OpenSouce/" rel="alternate" type="text/html" title="优秀开源仓库" /><published>2016-02-14T00:00:00+08:00</published><updated>2016-02-14T00:00:00+08:00</updated><id>http://localhost:4000/OpenSouce</id><content type="html" xml:base="http://localhost:4000/OpenSouce/">&lt;h2 id=&quot;section&quot;&gt;苹果开源&lt;/h2&gt;
+&lt;blockquote&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;https://opensource.apple.com/source/&quot;&gt;源码&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;https://opensource.apple.com/tarballs/&quot;&gt;压缩文件&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;持续更新ing&lt;/p&gt;</content><summary type="html">收藏优秀的开源仓库</summary></entry><entry><title type="html">My 2016</title><link href="http://localhost:4000/My-2016/" rel="alternate" type="text/html" title="My 2016" /><published>2016-01-24T00:00:00+08:00</published><updated>2016-01-24T00:00:00+08:00</updated><id>http://localhost:4000/My-2016</id><content type="html" xml:base="http://localhost:4000/My-2016/">&lt;h4 id=&quot;section&quot;&gt;泥鳅的出现&lt;/h4&gt;
 &lt;p&gt;在2016年8月10号这一天，女儿泥鳅出世了，而我也开启了痛并快乐着的奶爸之路。养育孩子的过程既是在看着她成长也是在看着自己成长，在这个过程中我学会了如何主动分担妻子的重担、如何加强夫妻之间的沟通与理解、如何高质量地陪伴家人，这些东西根本无法从书本获得，唯有自己从生活中体验与摸索。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/me-and-nature-with-watermark.jpg&quot; alt=&quot;qiniu&quot; title=&quot;我和小泥鳅&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;mg&quot;&gt;与MG的一次结缘&lt;/h4&gt;
 &lt;p&gt;在2016年10月26号这一天，我们家又添新成员了——MG锐腾 1.5T豪华版。之前就有朋友推荐MG这个牌子不错，虽然是国产车但性价比很高。打那以后我老婆眼里就只有MG了，看着路上的MG3、MG6都会跟我说“老公你看”。前年去海南岛旅游的时候看到路上一台MG银色的SUV，那是我第一次看到MG锐腾，当时我跟老婆已经默默下了决心要买MG的这款车。希望这位新成员可以健健康康地为我们家保驾护航，陪伴我们一起去更多的地方体验生活。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://photocdn.sohu.com/20160224/mp60341363_1456299200877_2.jpeg?&quot; alt=&quot;image.baidu.com&quot; title=&quot;2016 MG锐腾&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;section-1&quot;&gt;家庭架构的调整&lt;/h4&gt;
 &lt;p&gt;在2016年12月1号这一天，老婆辞去自己热爱的工作而选择全身心地当全职妈妈。而我也开始成为了这个家唯一的经济支柱，虽然压力很大，但为了泥鳅的成长，我们一致认为这是最好的选择。老婆现在在运营自己的公众号，希望可以把自己对生活的态度和感悟分享给大家，其实粉丝带来的经济是其次，更重要的是对生活要保持认真的态度。只要她喜欢的坚持去做的，我都会在背后支持她。我自己则更加需要努力地工作，要思考如何建立自我品牌和提升自我价值，让我们家庭有更充分的经济保障。很多时候有些东西轮不到我们选择的，可以让我们选择的是用什么心态去面对，用积极的态度去面对人生才是强者的表现。&lt;/p&gt;
@@ -11,4 +287,4 @@
 &lt;p&gt;坚持锻炼有3年了，但一直很难突破自己。今年我尝试换了个方向去思考，尝试从饮食和锻炼的方法做出调整。果不其然，一个月后体重下降了10斤，体脂率达到15%，身体各种维度也达到优秀的标准。有一段时间我每天都记录自己的饮食、锻炼和体重的变化，尝试从中寻找一些规律，然后再有针对性地饮食和锻炼。后面我再专门写一些与锻炼相关的文章，既是对自己的总结也希望可以帮到更多有需要的朋友。&lt;/p&gt;
 
 &lt;h4 id=&quot;section-3&quot;&gt;先学做人再学做事&lt;/h4&gt;
-&lt;p&gt;先学做人再学做事这话在我刚大学毕业的时候就经常听前辈说，但自己也没有多大的领悟，今年我算彻底领悟了。自我感觉今年在专业技能方面有了质的飞越，特别是对项目架构能力的提升，但是对于工作中的人际关系我却没多少长进，反而又犯了以前犯过的错。想要在大环境混得好，除了有较强的业务能力还需要懂得里面的游戏规则，俗话说玩的溜。要怪就怪自己情商太低了，有时候阻碍了自己的发展，后面真的要好好看一下卡耐基的《人性的弱点》。失败的经验让人成长，希望自己可以审时度势，学会游戏规则，提升自己的情商。&lt;/p&gt;</content><summary type="html">2016的年度总结</summary></entry></feed>
+&lt;p&gt;先学做人再学做事这话在我刚出来工作的时候就常听长辈说，工作了这么久到现在我才深刻明白了这句话的价值。尽管感觉今年在专业技能方面有了质的提升，但是对于如何处理工作中的人际关系我却没怎么长进。想要在大环境混得好，单有较强的工作能力还不够，还需要对游戏规则玩的溜。常常怪自己情商不够高，有时候甚至阻碍了事业发展。之前老婆就叮嘱我好好看看卡耐基的《人性的弱点》，看来真的得阅读一下，希望自己后面可以审时度势，学会游戏规则，提升自己的情商，让自己职场的道路走得越来越顺吧。&lt;/p&gt;</content><summary type="html">2016的年度总结</summary></entry></feed>
