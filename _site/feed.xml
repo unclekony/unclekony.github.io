@@ -1,37 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-02-17T00:38:40+08:00</updated><id>http://localhost:4000//</id><title type="html">KONY</title><subtitle>记录一位奋斗在互联网前线的80后奶爸的捣腾之路</subtitle><entry><title type="html">iOS开发知识点总结</title><link href="http://localhost:4000/iOS-Dev-Summarizing/" rel="alternate" type="text/html" title="iOS开发知识点总结" /><published>2016-02-16T00:00:00+08:00</published><updated>2016-02-16T00:00:00+08:00</updated><id>http://localhost:4000/iOS-Dev-Summarizing</id><content type="html" xml:base="http://localhost:4000/iOS-Dev-Summarizing/">&lt;h2 id=&quot;section&quot;&gt;底层原理&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-02-17T00:41:45+08:00</updated><id>http://localhost:4000//</id><title type="html">KONY</title><subtitle>记录一位奋斗在互联网前线的80后奶爸的捣腾之路</subtitle><entry><title type="html">iOS开发知识点总结</title><link href="http://localhost:4000/iOS-Dev-Summarizing/" rel="alternate" type="text/html" title="iOS开发知识点总结" /><published>2016-02-16T00:00:00+08:00</published><updated>2016-02-16T00:00:00+08:00</updated><id>http://localhost:4000/iOS-Dev-Summarizing</id><content type="html" xml:base="http://localhost:4000/iOS-Dev-Summarizing/">&lt;h2 id=&quot;section&quot;&gt;底层原理&lt;/h2&gt;
 
 &lt;h4 id=&quot;weak&quot;&gt;weak的实现&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;runtime为每个类对象都维护了一张全局的weak_table，里面的key是赋值对象的内存地址，value是weak修饰符的属性对象内存地址。当某个对象delloc的时候，系统会检查该类对象是否存在弱引用，如果存在则检查于之对应的weak_table，将所有能匹配到这个对象的value重新指向nil。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;runtime为每个类对象都维护了一张全局的weak_table，里面的key是赋值对象的内存地址，value是weak修饰符的属性对象内存地址。当某个对象delloc的时候，系统会检查该类对象是否存在弱引用，如果存在则检查于之对应的weak_table，将所有能匹配到这个对象的value重新指向nil。&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;!http://www.cocoachina.com/ios/20150605/11990.html&quot;&gt;weak的生命周期：具体实现方法&lt;/a&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;kvc&quot;&gt;kvc的实现&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;kvc主要是根据类对象的isa指针和方法名，从method_list里面找到对应方法的函数指针，然后结合参数去执行。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;kvc主要是根据类对象的isa指针和方法名，从method_list里面找到对应方法的函数指针，然后结合参数去执行。&lt;/p&gt;
 
 &lt;h4 id=&quot;kvo&quot;&gt;kvo的实现&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;kvo主要运用了isa-swizzling的方法，在调用addObserve方法的时候，讲对象的isa指针指向了一个新的继承于当前类的子类对象，并添加了一个相同名字的setter方法在方法列表里面，在setter方法里面加上了willChangeValueForKey/didChangeValueForKey的触发。当我们调用了setter方法的时候，会先触发will然后再调用原类对象的setter方法再调用did。当调用removeObserve方法的时候，该对象的isa指针又重新指向了原类对象了。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;kvo主要运用了isa-swizzling的方法，在调用addObserve方法的时候，讲对象的isa指针指向了一个新的继承于当前类的子类对象，并添加了一个相同名字的setter方法在方法列表里面，在setter方法里面加上了willChangeValueForKey/didChangeValueForKey的触发。当我们调用了setter方法的时候，会先触发will然后再调用原类对象的setter方法再调用did。当调用removeObserve方法的时候，该对象的isa指针又重新指向了原类对象了。&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://www.nscookies.com/isa-swizzling/&quot;&gt;isa-swizzling?什么鬼？&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://www.pluto-y.com/isa-swizzling-and-runtime/&quot;&gt;从自己实现isa-swizzling到说一些Runtime的内容&lt;/a&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;gcd&quot;&gt;GCD的实现&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;主要由libdispatch、Libc和XNU内核实现了GCD，通过C语言层面的管理线程的容器和FIFO队列维护这个过程。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;主要由libdispatch、Libc和XNU内核实现了GCD，通过C语言层面的管理线程的容器和FIFO队列维护这个过程。&lt;/p&gt;
 
 &lt;h4 id=&quot;block&quot;&gt;block实现原理&lt;/h4&gt;
-
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#import &quot;TestClass.h&quot;
 &lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;@implementation&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TestClass&lt;/span&gt;
@@ -52,50 +39,32 @@
 &lt;span class=&quot;k&quot;&gt;@end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-
 &lt;p&gt;&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/Objective-C%E7%9A%84block_2.jpg&quot; alt=&quot;C++下的Block&quot; /&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;从画线和画圈处得知block本质上是一个函数指针，而且这个函数指针是包含在一个结构体里面，该结构体还会包含block参数的字段。&lt;/li&gt;
-    &lt;li&gt;箭头处可以发现为何说block会引用self。&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;ul&gt;
+  &lt;li&gt;从画线和画圈处得知block本质上是一个函数指针，而且这个函数指针是包含在一个结构体里面，该结构体还会包含block参数的字段。&lt;/li&gt;
+  &lt;li&gt;箭头处可以发现为何说block会引用self。&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;ios&quot;&gt;iOS内存管理机制&lt;/h2&gt;
 
 &lt;h4 id=&quot;section-1&quot;&gt;基础部分&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;iOS的内存管理是通过引用数来管理对象的。在MRC的时期，需要自己手动地调用retain/release方法，在ARC时期，在静态编译阶段，编译器会分析代码在适当的地方添加retain/release/autorelease方法。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;iOS的内存管理是通过引用数来管理对象的。在MRC的时期，需要自己手动地调用retain/release方法，在ARC时期，在静态编译阶段，编译器会分析代码在适当的地方添加retain/release/autorelease方法。&lt;/p&gt;
 
 &lt;h4 id=&quot;autorelease&quot;&gt;autorelease&lt;/h4&gt;
-
-&lt;blockquote&gt;
-
-  &lt;p&gt;每一个线程在每一个runloop开始的时候都会创建一个autoreleasepool，系统会将autoreleased的对象放到这个pool里面。当这个runloop要结束的时候，系统会将pool里面的所有autoreleased对象进行释放。我们可以通过@autoreleasepool关键字去创建一个局部的autoreleasepool，当超过了这个作用域的时候，里面的autoreleased对象都会全部释放。@autoreleasepool适合解决创建大量临时对象。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;每一个线程在每一个runloop开始的时候都会创建一个autoreleasepool，系统会将autoreleased的对象放到这个pool里面。当这个runloop要结束的时候，系统会将pool里面的所有autoreleased对象进行释放。我们可以通过@autoreleasepool关键字去创建一个局部的autoreleasepool，当超过了这个作用域的时候，里面的autoreleased对象都会全部释放。@autoreleasepool适合解决创建大量临时对象。&lt;/p&gt;
 
 &lt;h4 id=&quot;section-2&quot;&gt;问题&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;用什么方法在创建之后会放到autoreleasepool中？&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;ul&gt;
+  &lt;li&gt;用什么方法在创建之后会放到autoreleasepool中？&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;block-1&quot;&gt;block&lt;/h2&gt;
 
 &lt;h4 id=&quot;section-3&quot;&gt;概念&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;具备保存上下文变量内存块的函数指针。OC的闭包。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;具备保存上下文变量内存块的函数指针。OC的闭包。&lt;/p&gt;
 
 &lt;h4 id=&quot;block-2&quot;&gt;__block实现原理&lt;/h4&gt;
-
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;int main(int argc, char * argv[]) {
 	int a = 10;
     __block int b = 11;
@@ -107,45 +76,32 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-
 &lt;p&gt;&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/Objective-C%E4%B8%8B%E7%9A%84__block_2.jpg&quot; alt=&quot;C++下的__block&quot; /&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;__block其实是由一个传值过程变为传地址的过程。&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;ul&gt;
+  &lt;li&gt;__block其实是由一个传值过程变为传地址的过程。&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;section-4&quot;&gt;多线程&lt;/h2&gt;
 
 &lt;h4 id=&quot;nsthread&quot;&gt;NSThread&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;GCD和NSOperation会把对象添加到autoreleasepool中，但NSThread需要自己手动创建并触发释放。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;GCD和NSOperation会把对象添加到autoreleasepool中，但NSThread需要自己手动创建并触发释放。&lt;/p&gt;
 
 &lt;h3 id=&quot;gcd-1&quot;&gt;GCD&lt;/h3&gt;
 
 &lt;h4 id=&quot;section-5&quot;&gt;串行、并行、同步、异步&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;串行、并行是针对线程队列，同步、异步是针对线程的任务。&lt;/li&gt;
-    &lt;li&gt;系统对串行队列的调度是单条线程把任务一个一个地执行。&lt;/li&gt;
-    &lt;li&gt;系统对并行队列的调度是由系统管理多个线程去完成任务，任务之前无需等待。&lt;/li&gt;
-    &lt;li&gt;同步(sync)指当前线程会阻塞，等待同步线程完成当前任务后再去执行。&lt;/li&gt;
-    &lt;li&gt;异步(async)指当前线程不需要阻塞，可以直接执行当前任务。&lt;/li&gt;
-    &lt;li&gt;dispatch_get_main_queue是串行队列。&lt;/li&gt;
-    &lt;li&gt;dispatch_get_global_queue是并行队列。&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;ul&gt;
+  &lt;li&gt;串行、并行是针对线程队列，同步、异步是针对线程的任务。&lt;/li&gt;
+  &lt;li&gt;系统对串行队列的调度是单条线程把任务一个一个地执行。&lt;/li&gt;
+  &lt;li&gt;系统对并行队列的调度是由系统管理多个线程去完成任务，任务之前无需等待。&lt;/li&gt;
+  &lt;li&gt;同步(sync)指当前线程会阻塞，等待同步线程完成当前任务后再去执行。&lt;/li&gt;
+  &lt;li&gt;异步(async)指当前线程不需要阻塞，可以直接执行当前任务。&lt;/li&gt;
+  &lt;li&gt;dispatch_get_main_queue是串行队列。&lt;/li&gt;
+  &lt;li&gt;dispatch_get_global_queue是并行队列。&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h4 id=&quot;section-6&quot;&gt;锁种类&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;&lt;a href=&quot;http://www.cocoachina.com/ios/20161129/18216.html&quot;&gt;iOS 中的各种锁&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.cocoachina.com/ios/20161129/18216.html&quot;&gt;iOS 中的各种锁&lt;/a&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;gcd-2&quot;&gt;GCD实现同步&lt;/h4&gt;
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -178,10 +134,7 @@ NSLog(&quot;2222222&quot;);
 &lt;h2 id=&quot;runtime&quot;&gt;runtime&lt;/h2&gt;
 
 &lt;h4 id=&quot;section-7&quot;&gt;概念&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;runtime是运行于操作系统与应该用程序的一个中间层，为OC消息转发机制、运行时动态生成类、对象以和方法，消息转发机制，以及Method Swizzling提供基础，并且暴露一套C接口给应用者调用。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;runtime是运行于操作系统与应该用程序的一个中间层，为OC消息转发机制、运行时动态生成类、对象以和方法，消息转发机制，以及Method Swizzling提供基础，并且暴露一套C接口给应用者调用。&lt;/p&gt;
 
 &lt;h4 id=&quot;objectclassmetaclass&quot;&gt;Object、Class、MetaClass的关系&lt;/h4&gt;
 &lt;p&gt;NSObject的实现
@@ -196,16 +149,10 @@ NSLog(&quot;2222222&quot;);
 &lt;p&gt;isa是对象指向的对应Class结构体的指针
 &lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/isa%E6%8C%87%E9%92%88%E6%88%AA%E5%9B%BE.jpg&quot; alt=&quot;isa&quot; /&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-
-  &lt;p&gt;在OC下面everything都是对象，instance是对象，class也是对象。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;在OC下面everything都是对象，instance是对象，class也是对象。&lt;/p&gt;
 
 &lt;h4 id=&quot;methodimpsel&quot;&gt;Method、IMP、SEL的关系&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;objc_method_list指向的列表存储的正式Method。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;objc_method_list指向的列表存储的正式Method。&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;struct objc_method
 {
@@ -222,26 +169,17 @@ typedef struct objc_method * Method;
 &lt;p&gt;通过&lt;em&gt;clang -rewrite-objc&lt;/em&gt; 把OC代码转成C++得到下图。
 &lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E8%BF%87%E7%A8%8B.jpg&quot; alt=&quot;消息派发&quot; /&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-
-  &lt;p&gt;runtime会在当前isa指向的objc_class结构体里面的objc_cache搜索对应的Method,如果没有则会在objc_method_list继续搜索，如果还没有会在super_class逐层往上找。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;runtime会在当前isa指向的objc_class结构体里面的objc_cache搜索对应的Method,如果没有则会在objc_method_list继续搜索，如果还没有会在super_class逐层往上找。&lt;/p&gt;
 
 &lt;h4 id=&quot;section-9&quot;&gt;消息转发机制&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;当runtime找不到某个方法的时候，它会给开发者机会去处理，这个处理的机制就是消息转发机制，而我们常说的消息转发机制其实分两个过程，动态决议和消息转发。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;当runtime找不到某个方法的时候，它会给开发者机会去处理，这个处理的机制就是消息转发机制，而我们常说的消息转发机制其实分两个过程，动态决议和消息转发。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E8%BF%87%E7%A8%8B.jpg&quot; alt=&quot;消息转发机制&quot; /&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;动态决议的resolveInstanceMethod和resolveClassMethod主要是针对当前对象。&lt;/li&gt;
-    &lt;li&gt;消息转发forwardingTargetForSelector和forwardInvocation是针对其他对象。&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;ul&gt;
+  &lt;li&gt;动态决议的resolveInstanceMethod和resolveClassMethod主要是针对当前对象。&lt;/li&gt;
+  &lt;li&gt;消息转发forwardingTargetForSelector和forwardInvocation是针对其他对象。&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h4 id=&quot;method-swizzling&quot;&gt;Method swizzling&lt;/h4&gt;
 &lt;p&gt;&lt;a href=&quot;http://tech.glowing.com/cn/method-swizzling-aop/&quot;&gt;Method Swizzling 和 AOP 实践&lt;/a&gt;&lt;/p&gt;
@@ -249,19 +187,13 @@ typedef struct objc_method * Method;
 &lt;h2 id=&quot;runloop&quot;&gt;runloop&lt;/h2&gt;
 
 &lt;h4 id=&quot;section-10&quot;&gt;概念&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;runloop其实就是程序的事件循环机制，我们程序能不断地响应键盘、触碰等事件全靠它。&lt;/li&gt;
-    &lt;li&gt;runloop管理着所有我们需要处理的事件和消息，这些事件和消息都会经过“接受”-&amp;gt;“等待”-&amp;gt;“处理”这些状态。&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
+&lt;ul&gt;
+  &lt;li&gt;runloop其实就是程序的事件循环机制，我们程序能不断地响应键盘、触碰等事件全靠它。&lt;/li&gt;
+  &lt;li&gt;runloop管理着所有我们需要处理的事件和消息，这些事件和消息都会经过“接受”-&amp;gt;“等待”-&amp;gt;“处理”这些状态。&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h4 id=&quot;runloop-1&quot;&gt;runloop与线程的关系&lt;/h4&gt;
-&lt;blockquote&gt;
-
-  &lt;p&gt;系统有一个全局Map管理线程对象和runloop对象的一对一关系。当第一次去获取runloop对象的时候系统才会去初始化这个map，才会把主线程的runloop放到map管理。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;系统有一个全局Map管理线程对象和runloop对象的一对一关系。当第一次去获取runloop对象的时候系统才会去初始化这个map，才会把主线程的runloop放到map管理。&lt;/p&gt;
 
 &lt;h4 id=&quot;runloopnstimer&quot;&gt;runloop跟NSTimer的关系&lt;/h4&gt;
 &lt;p&gt;&lt;a href=&quot;http://www.superqq.com/blog/2016/05/05/ios-nsrunllop-nstimer/&quot;&gt;关于NSRunLoop和NSTimer的深入理解&lt;/a&gt;&lt;/p&gt;
