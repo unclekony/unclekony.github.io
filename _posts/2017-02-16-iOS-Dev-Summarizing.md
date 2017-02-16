@@ -175,8 +175,15 @@ isa是对象指向的对应Class结构体的指针
 >
 objc\_method\_list指向的列表存储的正式Method。
 
-(下图非官方公开代码)
-![Method](http://okxyl92j3.bkt.clouddn.com/objc_method%E5%AE%9E%E7%8E%B0%E6%88%AA%E5%9B%BE.jpg)
+```
+struct objc_method
+{
+	SEL method_name;
+	char * method_types;
+	IMP method_imp;
+};
+typedef struct objc_method * Method;
+```
 
 #### “调用方法”的根本是“消息派发”
 

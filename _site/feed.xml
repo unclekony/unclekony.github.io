@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-02-17T00:33:29+08:00</updated><id>http://localhost:4000//</id><title type="html">KONY</title><subtitle>记录一位奋斗在互联网前线的80后奶爸的捣腾之路</subtitle><entry><title type="html">iOS开发知识点总结</title><link href="http://localhost:4000/iOS-Dev-Summarizing/" rel="alternate" type="text/html" title="iOS开发知识点总结" /><published>2016-02-16T00:00:00+08:00</published><updated>2016-02-16T00:00:00+08:00</updated><id>http://localhost:4000/iOS-Dev-Summarizing</id><content type="html" xml:base="http://localhost:4000/iOS-Dev-Summarizing/">&lt;h2 id=&quot;section&quot;&gt;底层原理&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xml" href="http://localhost:4000/feed.xslt.xml"?><feed xmlns="http://www.w3.org/2005/Atom"><generator uri="http://jekyllrb.com" version="3.3.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-02-17T00:38:40+08:00</updated><id>http://localhost:4000//</id><title type="html">KONY</title><subtitle>记录一位奋斗在互联网前线的80后奶爸的捣腾之路</subtitle><entry><title type="html">iOS开发知识点总结</title><link href="http://localhost:4000/iOS-Dev-Summarizing/" rel="alternate" type="text/html" title="iOS开发知识点总结" /><published>2016-02-16T00:00:00+08:00</published><updated>2016-02-16T00:00:00+08:00</updated><id>http://localhost:4000/iOS-Dev-Summarizing</id><content type="html" xml:base="http://localhost:4000/iOS-Dev-Summarizing/">&lt;h2 id=&quot;section&quot;&gt;底层原理&lt;/h2&gt;
 
 &lt;h4 id=&quot;weak&quot;&gt;weak的实现&lt;/h4&gt;
 &lt;blockquote&gt;
@@ -207,8 +207,15 @@ NSLog(&quot;2222222&quot;);
   &lt;p&gt;objc_method_list指向的列表存储的正式Method。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;(下图非官方公开代码)
-&lt;img src=&quot;http://okxyl92j3.bkt.clouddn.com/objc_method%E5%AE%9E%E7%8E%B0%E6%88%AA%E5%9B%BE.jpg&quot; alt=&quot;Method&quot; /&gt;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;struct objc_method
+{
+	SEL method_name;
+	char * method_types;
+	IMP method_imp;
+};
+typedef struct objc_method * Method;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;h4 id=&quot;section-8&quot;&gt;“调用方法”的根本是“消息派发”&lt;/h4&gt;
 
