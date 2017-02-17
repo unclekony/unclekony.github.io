@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "iOS开发知识点总结"
+title: "iOS基础知识归纳总结"
 date: 2016-02-16
 excerpt: "对iOS开发中runtime、多线程等知识点的归纳总结"
 ---
@@ -26,7 +26,7 @@ kvo主要运用了isa-swizzling的方法，在调用addObserve方法的时候，
 主要由libdispatch、Libc和XNU内核实现了GCD，通过C语言层面的管理线程的容器和FIFO队列维护这个过程。
 
 #### block实现原理
-```
+```objc
 #import "TestClass.h"
 
 @implementation TestClass
@@ -68,7 +68,7 @@ iOS的内存管理是通过引用数来管理对象的。在MRC的时期，需�
 具备保存上下文变量内存块的函数指针。OC的闭包。
 
 #### __block实现原理
-```
+```objc
 int main(int argc, char * argv[]) {
 	int a = 10;
     __block int b = 11;
@@ -103,7 +103,7 @@ GCD和NSOperation会把对象添加到autoreleasepool中，但NSThread需要自�
 [iOS 中的各种锁](http://www.cocoachina.com/ios/20161129/18216.html)
 
 #### GCD实现同步
-```
+```c
 dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 dispatch_aync(queue, ^{
@@ -118,7 +118,7 @@ NSLog("2222222");
 ```
 
 #### GCD实现单例
-```
+```objc
 + (instancetype)shareInstance
 {
     static dispatch_once_t onceToken = 0;
@@ -153,7 +153,7 @@ isa是对象指向的对应Class结构体的指针
 #### Method、IMP、SEL的关系
 objc\_method\_list指向的列表存储的正式Method。
 
-```
+```objc
 struct objc_method
 {
 	SEL method_name;
